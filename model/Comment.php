@@ -8,6 +8,7 @@ class Comment
     private $pseudonyme;
     private $comments;
     private $creationDate;
+    private $isReported;
 
     /**
      * Article constructor.
@@ -16,13 +17,30 @@ class Comment
      * @param $content
      * @param $creationDate
      */
-    public function __construct($id, $articleId, $pseudonyme, $comments, $creationDate)
+    public function __construct($id, $articleId, $pseudonyme, $comments, $creationDate, $isReported)
     {
         $this->id = $id;
         $this->articleId = $articleId;
         $this->pseudonyme = $pseudonyme;
         $this->comments = $comments;
         $this->creationDate = $creationDate;
+        $this->isReported = $isReported;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isReported()
+    {
+        return $this->isReported;
+    }
+
+    /**
+     * @param mixed $isReported
+     */
+    public function setIsReported($isReported)
+    {
+        $this->isReported = $isReported;
     }
 
     /**

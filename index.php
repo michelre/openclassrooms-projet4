@@ -1,74 +1,112 @@
 <?php
 
-require_once('controller/FrontendController.php');
-require_once('controller/BackendController.php');
+require_once 'router/Router.php';
 
-$frontendController = new FrontendController();
-$backendController = new BackendController();
+$routes = array(
+    array(
+        "action" => null,
+        "controller" => "frontendController::listArticles",
+        "params" => array()
+    ),
+    array(
+        "action" => "detailArticle",
+        "controller" => "frontendController::detailArticle",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET")
+        )
+    ),
+    array(
+        "action" => "addComment",
+        "controller" => "frontendController::postComment",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET"),
+            array("key" => "pseudonyme", "method" => "POST"),
+            array("key" => "content", "method" => "POST"),
+        )
+    ),
+    array(
+        "action" => "reportComment",
+        "controller" => "frontendController::reportComment",
+        "params" => array(
+            array("key" => "commentId", "method" => "GET")
+        )
+    ),
+    array(
+        "action" => "adminHome",
+        "controller" => "backendController::displayAdminHome",
+        "params" => array()
+    ),
+    array(
+        "action" => "modifyArticle",
+        "controller" => "backendController::modifyArticle",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET"),
+        )
+    ),
+    array(
+        "action" => "displayAddArticle",
+        "controller" => "backendController::displayAddArticle",
+        "params" => array()
+    ),
+    array(
+        "action" => "postArticle",
+        "controller" => "backendController::postArticle",
+        "params" => array(
+            array("key" => "title", "method" => "POST"),
+            array("key" => "content", "method" => "POST"),
+            array("key" => "pseudonyme", "method" => "POST"),
+        )
+    ),
+    array(
+        "action" => "modifyArticleAction",
+        "controller" => "backendController::modifyArticleAction",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET"),
+            array("key" => "title", "method" => "POST"),
+            array("key" => "content", "method" => "POST"),
+        )
+    ),
+    array(
+        "action" => "deleteArticle",
+        "controller" => "backendController::deleteArticle",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET")
+        )
+    ),
+    array(
+        "action" => "showReportedComments",
+        "controller" => "backendController::showReportedComments",
+        "params" => array(
+            array("key" => "articleId", "method" => "GET")
+        )
+    ),
+    array(
+        "action" => "deleteComment",
+        "controller" => "backendController::deleteComment",
+        "params" => array(
+            array("key" => "commentId", "method" => "GET")
+        )
+    ),
+    array(
+        "action" => "login",
+        "controller" => "backendController::login",
+        "params" => array()
+    ),
+    array(
+        "action" => "loginAction",
+        "controller" => "backendController::loginAction",
+        "params" => array(
+            array("key" => "pseudo", "method" => "POST"),
+            array("key" => "password", "method" => "POST")
+        )
+    ),
+    array(
+        "action" => "logout",
+        "controller" => "backendController::logout",
+        "params" => array()
+    )
+);
 
-if(!isset($_GET['action'])){
-    $frontendController->listArticles();
-    return;
-}
-if($_GET['action'] === 'listarticles'){
-    $frontendController->listArticles();
-    return;
-}
-if($_GET['action'] === 'detailArticle'){
-    $frontendController->detailArticle($_GET['articleId']);
-    return;
-}
-if($_GET['action'] === 'dernierArticle'){
-    $frontendController->dernierArticle();
-    return;
-}
-if($_GET['action'] === 'addComment'){
-    $frontendController->postComment($_GET['articleId'], $_POST['pseudonyme'], $_POST['content']);
-    return;
-}
-if($_GET['action'] === 'register'){
-    $frontendController->displayRegisterPage();
-    return;
-}
-
-if($_GET['action'] === 'login'){
-    $backendController->displayLoginPage();
-    return;
-}
-if($_GET['action'] === 'loginAction'){
-    $backendController->loginAction($_POST['pseudonyme'], $_POST['password']);
-    return;
-}
-
-if(!isset($_GET['action'])){
-    $backendController->listArticles();
-    return;
-}
-if($_GET['action'] === 'adminHome'){
-    $backendController->displayAdminHome();
-    return;
-}
-if($_GET['action'] === 'postArticle'){
-    $backendController->postArticle($_GET['articleId'], $_POST['pseudonyme'], $_POST['content']);
-    return;
-}
-if($_GET['action'] === 'modifyArticle'){
-    $backendController->modifyArticle($_GET['articleId']);
-    return;
-}
-if($_GET['action'] === 'deleteArticle'){
-    $backendController->deleteArticle($_GET['articleId']);
-    return;
-}
-
-
-
-
-
-
-/**
- * 1. Afficher les commentaires sur la page de détail des articles
- * 2. Donner la possibilité de signaler un commentaire
- * 3. Séparer le header et le footer pour éviter d'avoir à répéter du code
- * 4. Revoir la page d'index pour afficher le dernier article en page principale
- */
+$router = new Router();
+$router->initRoutes($routes);
+$router->run();

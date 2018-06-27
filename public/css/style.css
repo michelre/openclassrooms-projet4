@@ -1,23 +1,36 @@
-body
-{
-	width: 100%;
-	margin: auto;
-}
+/*GENERAL*/
 img
 {
 	width: 100%;
 	height: 300px;
 }
 
-.nav
+.container
 {
 	margin: auto;
 }
 
+/*menu*/
+.navbar
+{
+	background-color: #ECECEC;
+}
+
+.navbar-default .navbar-brand
+{
+	color: black;
+}
+
+.navbar-default .navbar-nav>li>a
+{
+	color: black;
+}
+/*FOOTER*/
 footer
 {
 	border-top: 1px solid;
 	padding-left: 50px;
+	margin-top: 20px;
 }
 
 .btn-lg
@@ -26,30 +39,39 @@ footer
 	height: 50px;
 	border-radius: 25px;
 }
-section
-{
-	margin: auto;
-}
-#error
-{
-	background-color: red;
-	color: white;
-	text-align: center;
-	padding: 5px;
-}
 
-#success
+/*PAGE PRINCIPALE*/
+#dernier_article 
 {
-	background-color: green;
-	color: white;
-	text-align: center;
-	padding: 5px;
-}
-
-#dernier_article p
-{
-	max-height: 200px;
+	max-height: 310px;
 	overflow: hidden;
 }
+
+#dernier_article h2
+{
+	text-align: center;
+}
+
+
+/*detail article*/
+#textarea
+{
+	height: 150px;
+}
+
+/*page connection*/
+#connexion
+{
+	margin-top: 150px;
+    margin-bottom: 150px;
+}
+
+#connexion section h2
+{
+	padding-bottom: 50px;
+}
+
+
+
 
 

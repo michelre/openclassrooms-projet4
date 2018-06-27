@@ -1,54 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
-	<meta charset="utf-8">
-	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="public/css/style.css">
-	<link rel="icon" type="image/x-icon" href="images/ico/favicon.ico" />
-	<script src="https://use.fontawesome.com/6f0fc455cc.js"></script>
-	<script type="text/javascript" src="jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="tinymce/js/tinymce/tinymce.min.js"></script>
-	<title>Blog Jean FORTEROCHE</title>
-	<script>
-		tinymce.init({ selector:'textarea' });
-	</script>
+    <?php include("view/common/public_head.php"); ?>
 </head>
 <body>
-	<header>
+  <div class="container">
+  <header>
+    <?php include("view/common/public_menu.php"); ?>
+  </header>
 
-		<?php include("public_menu.php"); ?>
-	</header>
 
+  <section class="row">
+    <h1><?php echo $article->getTitle(); ?></h1>
+    <p><?php echo $article->getContent(); ?></p>
+    <div class="col-md-6">
 
-	<section>
-		<div class="container">
+      <?php foreach ($comments as $comment) { ?>
 
-			<h1><?php echo $article->getTitle(); ?></h1>
-			<p><?php echo $article->getContent(); ?></p>
-			
-		</div>
+        <h3><?php echo $comment->getPseudonyme(); ?></h3>
+        <p><?php echo $comment->getComments(); ?></p>
+        <p><?php echo $comment->getCreationDate(); ?></p>
+        <p>
+            <?php if ($comment->isReported()) { ?>
+              <span class="text-danger">Déjà signalé</span>
+            <?php } ?>
 
-		<div class="commentaires">
-			
-			 <?php foreach ($comments as $comment) { ?>
-
-			<h3><?php echo $comment->getPseudonyme(); ?></h3>
-			<p><?php echo $comment->getComments(); ?></p>
-			<p><?php echo $comment->getCreationDate(); ?></p>
-			<p><a href="?action=comment_manager&articleId=<?php echo $article->getId(); ?>">Signaler</a></p>
-		<?php } ?>
-
-			<h2>Publier un nouveau commentaire</h2>
-			<form method="POST" action="?action=addComment&articleId=<?php echo $article->getId(); ?>">
-				<input type="text" name="pseudonyme"></br>
-				<textarea id="tinymce" name="content" placeholder="contenu de l'article"></textarea></br>
-				<button type="submit">Publier</button>
-			</form>
-		</div>
-	</section>
-
- <?php include("public_footer.php"); ?>
- 
+            <?php if (!$comment->isReported()) { ?>
+              <a href="?action=reportComment&commentId=<?php echo $comment->getId(); ?>">Signaler</a>
+            <?php } ?>
+        </p>
+      <?php } ?>
+    </div>
+      <div class="col-md-8">
+      <h3>Laisser un commentaire</h2>
+      <form method="POST" action="?action=addComment&articleId=<?php echo $article->getId(); ?>">
+      <div class="form-group">
+        <input type="text" name="pseudonyme" placeholder="pseudonyme" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <textarea id="textarea" name="content" placeholder="Votre commentaire" class="form-control" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Publier</button>
+    </form>
+    </div>
+  </section>
+  <?php include("view/common/public_footer.php"); ?>
+  <?php include("view/common/include_scripts.php"); ?>
+  </div>
 </body>
 </html>

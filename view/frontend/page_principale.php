@@ -2,34 +2,27 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="public/css/style.css">
-	<link rel="icon" type="image/x-icon" href="images/ico/favicon.ico"/>
-	<script src="https://use.fontawesome.com/6f0fc455cc.js"></script>
-	<title>Blog Jean FORTEROCHE</title>
+    <?php include("view/common/public_head.php"); ?>
 </head>
 
 <body>
+	<div class="container">
 	<header>
-		
-		<?php include("public_menu.php"); ?>
-
-		<div class="col-xs-12 col-sm-12 col-md-12"><img src="public/images/USA_Alaska.jpg" alt="USA_Alaska">
-		</div>
-
+		<?php include("view/common/public_menu.php"); ?>
 	</header>
 
+		<img src="public/images/USA_Alaska.jpg" alt="USA_Alaska">
+
 	<section class="row">
-		<article class="col-sm-8">
-		
+		<article class="col-md-8">
+
 			<div id="dernier_article">
 			<h2><?php echo $article->getTitle(); ?></h2>
-			<p><?php echo $article->getContent(); ?></p>
-			<a href="?action=detailArticle&articleId=<?php echo $article->getId(); ?>">Voir la suite...</a>
+			<p><?php echo $article->getContent(); ?></p>		
 			</div>
+			<a href="?action=detailArticle&articleId=<?php echo $article->getId(); ?>">Voir la suite...</a>
 		</article>
-		<aside class="col-sm-4 table-reponsive">
+		<aside class="col-md-4 table-reponsive">
 			<table class="table table-bordered table-striped table-condensed">
 				<caption>
 					<h3>Billet simple pour l'Alaska</h3>
@@ -56,8 +49,8 @@
 
 		</aside>
 	</section>
-
-	<?php include("public_footer.php"); ?>
-	
+	<?php include("view/common/public_footer.php"); ?>
+  	<?php include("view/common/include_scripts.php"); ?>
+ 	</div>
 </body>
 </html>

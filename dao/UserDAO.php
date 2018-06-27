@@ -1,38 +1,21 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: remimichel
- * Date: 23/05/18
- * Time: 18:34
- */
+
+require_once "BaseDAO.php";
+require_once "model/User.php";
 
 class UserDAO extends BaseDAO
 {
-//partie inscription
-	public function postRegister($id, $pseudonyme, $email, $password, $creationDate)
+    public function addDefaultUser()
     {
-        $dbConnect = $this->$db;
-        $users = $db->prepare('INSERT INTO membres(pseudonyme, email, password, creationDate) VALUES(?, ?, ?, NOW())');
-        $affectedLines = $users->execute(array($pseudonyme, $email, $password, $creationDate));
-
-        return $affectedLines;
-    }
-    public function testEmail($email)
-    {
-    	$dbConnect = $this->$db;
-    	$users = $db->prepare('SELECT count(*) as numberEmail FROM membres WHERE email = ?');
-    	$User = $users->execute(array($email));
-
-    	return $user;
+        $stmt = $this->db->prepare('INSERT INTO membres(pseudonyme, password, creationDate) VALUES(?, ?, NOW())');
+        return $stmt->execute(array('admin', password_hash("admin", PASSWORD_DEFAULT)));
     }
 
-    //partie connexion
-    public function connectBYEmail($email)
+    public function getByPseudonyme($pseudo)
     {
-    	$dbConnect = $this->$db;
-    	$users = $db->prepare('SELECT * FROM membres WHERE email = ?');
-    	$User = $users->execute(array($email));
-
-    	return $user;
+        $userDB = $this->db
+            ->query("SELECT * FROM membres WHERE pseudonyme='".$pseudo . "'")
+            ->fetch();
+        return new User($userDB["id"], $userDB["pseudonyme"], $userDB["password"], $userDB["creationDate"]);
     }
 }

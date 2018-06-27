@@ -21,6 +21,7 @@ class FrontendController
     {
         $articles = $this->articleDAO->getArticles();
         $article = $this->articleDAO->getDernierArticle();
+        $articlesHeader = $this->articleDAO->getArticles();
 
         require_once('view/frontend/page_principale.php');
     }
@@ -29,12 +30,14 @@ class FrontendController
     {
         $article = $this->articleDAO->getArticleById($articleId);
         $comments = $this->commentDAO->getCommentsByArticle($articleId);
+        $articlesHeader = $this->articleDAO->getArticles();
         require_once('view/frontend/detailArticle.php');
     }
-     public function postComment($articleId, $pseudonyme, $content)
+
+    public function postComment($articleId, $pseudonyme, $content)
     {
         $comments = $this->commentDAO->postComment($articleId, $pseudonyme, $content);
-        header('Location: ?action=detailArticle&articleId='.$articleId);
+        header('Location: ?action=detailArticle&articleId=' . $articleId);
     }
 
     public function displayRegisterPage()
@@ -43,11 +46,11 @@ class FrontendController
         require_once('view/frontend/page_principale');
     }
 
-    public function session_start(){
-        if(isset($_SESSION['connect'])){
-
-            require_once('view/frontend/page_principale');
-        }
+    public function reportComment($commentId)
+    {
+        $comment = $this->commentDAO->getById($commentId);
+        $this->commentDAO->reportComment($commentId);
+        header('Location: ?action=detailArticle&articleId=' . $comment->getArticleId());
     }
 
 }
