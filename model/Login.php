@@ -1,7 +1,7 @@
 <?php
 
 
-class Comment
+class Login
 {
     private $id;
     private $pseudonyme;

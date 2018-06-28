@@ -2,7 +2,7 @@
 
 require_once('BaseDAO.php');
 require_once('model/Article.php');
-require_once('model/comment.php');
+require_once('model/Comment.php');
 
 class ArticleDAO extends BaseDAO
 {
@@ -35,23 +35,23 @@ class ArticleDAO extends BaseDAO
         return new Article($articleDB['id'], $articleDB['titlearticles'], $articleDB['content'], $articleDB['pseudonyme'], $articleDB['creationDate']);
     }
 
-    public function create($title, $content, $pseudonyme)
+    public function create($article)
     {
         $articles = $this->db->prepare('INSERT INTO listarticles (titlearticles, content, pseudonyme, creationDate) VALUES (?, ?, ?, now())');
-        $affectedLines = $articles->execute(array($title, $content, $pseudonyme));
+        $affectedLines = $articles->execute(array($article->getTitle(), $article->getContent(), $article->getPseudonyme()));
         return $affectedLines;
     }
 
-    public function delete($articleId)
+    public function delete($article)
     {
-        $req = $this->db->query('DELETE FROM listarticles WHERE id = ' . $articleId);
+        $req = $this->db->query('DELETE FROM listarticles WHERE id = ' . $article->getId());
         $req->execute();
     }
 
-    public function update($articleId, $title, $content)
+    public function update($article)
     {
         $stmt = $this->db->prepare('UPDATE listarticles SET titlearticles = ?, content = ? WHERE id = ?');
-        return $stmt->execute(array($title, $content, $articleId));
+        return $stmt->execute(array($article->getTitle(), $article->getContent(), $article->getId()));
 
     }
 }

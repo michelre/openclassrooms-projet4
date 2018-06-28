@@ -1,6 +1,6 @@
 <?php
 
-//require_once "model/Comment.php";
+require_once "model/Comment.php";
 
 class commentDAO extends BaseDAO
 {
@@ -13,11 +13,11 @@ class commentDAO extends BaseDAO
         return new Comment($commentDB['id'], $commentDB['article_id'], $commentDB['pseudonyme'], $commentDB['comments'], $commentDB['creationDate'], $commentDB['is_reported']);
     }
 
-    public function postComment($articleId, $pseudonyme, $content)
+    public function postComment($articleId, $comment)
     {
         $comments = $this->db->prepare('INSERT INTO comments(article_id, pseudonyme, comments, creationDate) VALUES(?, ?, ?, NOW())');
 
-        $affectedLines = $comments->execute(array($articleId, $pseudonyme, $content));
+        $affectedLines = $comments->execute(array($articleId, $comment->getPseudonyme(), $comment->getComments()));
 
         return $affectedLines;
     }
@@ -32,10 +32,10 @@ class commentDAO extends BaseDAO
         return $comments;
     }
 
-    public function reportComment($commentId)
+    public function reportComment($comment)
     {
         return $this->db
-            ->query('UPDATE comments SET is_reported = 1 WHERE id = ' . $commentId)
+            ->query('UPDATE comments SET is_reported = 1 WHERE id = ' . $comment->getId())
             ->execute();
     }
 
@@ -52,14 +52,14 @@ class commentDAO extends BaseDAO
 
     }
 
-    public function delete($commentId)
+    public function delete($comment)
     {
-        return $this->db->query('DELETE FROM comments WHERE id = ' . $commentId)->execute();
+        return $this->db->query('DELETE FROM comments WHERE id = ' . $comment->getId())->execute();
     }
 
-    public function deleteAllFromArticleId($articleId)
+    public function deleteAllFromArticle($article)
     {
-        return $this->db->query('DELETE FROM comments WHERE article_id = ' . $articleId);
+        return $this->db->query('DELETE FROM comments WHERE article_id = ' . $article->getId());
     }
 
 }

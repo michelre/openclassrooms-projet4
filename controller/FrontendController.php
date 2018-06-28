@@ -3,6 +3,7 @@
 require_once('dao/ArticleDAO.php');
 require_once('dao/CommentDAO.php');
 require_once('dao/UserDAO.php');
+require_once("model/Comment.php");
 
 class FrontendController
 {
@@ -36,7 +37,10 @@ class FrontendController
 
     public function postComment($articleId, $pseudonyme, $content)
     {
-        $comments = $this->commentDAO->postComment($articleId, $pseudonyme, $content);
+        $comment = new Comment(null, $articleId, $pseudonyme, $content, null, false);
+        $comment->setPseudonyme($pseudonyme);
+        $comment->setComments($content);
+        $this->commentDAO->postComment($articleId, $comment);
         header('Location: ?action=detailArticle&articleId=' . $articleId);
     }
 
@@ -49,7 +53,7 @@ class FrontendController
     public function reportComment($commentId)
     {
         $comment = $this->commentDAO->getById($commentId);
-        $this->commentDAO->reportComment($commentId);
+        $this->commentDAO->reportComment($comment);
         header('Location: ?action=detailArticle&articleId=' . $comment->getArticleId());
     }
 

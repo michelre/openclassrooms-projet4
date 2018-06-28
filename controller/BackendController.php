@@ -1,5 +1,7 @@
 <?php
 
+require_once('model/Article.php');
+require_once('model/Comment.php');
 require_once('dao/ArticleDAO.php');
 require_once('dao/CommentDAO.php');
 require_once('dao/UserDAO.php');
@@ -49,8 +51,9 @@ class BackendController
     public function deleteArticle($articleId)
     {
         if ($this->connectionService->isConnected()) {
-            $this->commentDAO->deleteAllFromArticleId($articleId);
-            $this->articleDAO->delete($articleId);
+            $article = $this->articleDAO->getArticleById($articleId);
+            $this->commentDAO->deleteAllFromArticle($article);
+            $this->articleDAO->delete($article);
             header('Location:?action=adminHome');
         } else {
             header('Location: ?action=login');
@@ -70,8 +73,9 @@ class BackendController
 
     public function postArticle($title, $content, $pseudonyme)
     {
+        $article = new Article("", $title, $content, $pseudonyme, null);
         if ($this->connectionService->isConnected()) {
-            $this->articleDAO->create($title, $content, $pseudonyme);
+            $this->articleDAO->create($article);
             header('Location: ?action=adminHome');
         } else {
             header('Location: ?action=login');
@@ -100,7 +104,7 @@ class BackendController
     {
         if ($this->connectionService->isConnected()) {
             $comment = $this->commentDAO->getById($commentId);
-            $this->commentDAO->delete($commentId);
+            $this->commentDAO->delete($comment);
             header('Location: ?action=showReportedComments&articleId=' . $comment->getArticleId());
         } else {
             header('Location: ?action=login');
@@ -110,7 +114,10 @@ class BackendController
     public function modifyArticleAction($articleId, $title, $content)
     {
         if ($this->connectionService->isConnected()) {
-            $this->articleDAO->update($articleId, $title, $content);
+            $article = $this->articleDAO->getArticleById($articleId);
+            $article->setTitle($title);
+            $article->setContent($content);
+            $this->articleDAO->update($article);
             header('Location: ?action=detailArticle&articleId=' . $articleId);
         } else {
             header('Location: ?action=login');
